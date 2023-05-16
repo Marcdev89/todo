@@ -11,8 +11,18 @@ public class User {
     private String name;
     private String username;
     private String password;
-    //adress { street, city, zipcode, country }
+    @Embedded
+    private Address address;
 
+    public User() {
+    }
+
+    public User(String name, String username, String password, Address address) {
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.address = address;
+    }
 
     public long getId() {
         return id;
@@ -46,21 +56,11 @@ public class User {
         this.password = password;
     }
 
-    public User(String name, String username, String password) {
-        this.name = name;
-        this.username = username;
-        this.password = password;
-    }
-    public User() {
+    public Address getAddress() {
+        return address;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }

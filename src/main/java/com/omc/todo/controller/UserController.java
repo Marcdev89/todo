@@ -3,11 +3,13 @@ package com.omc.todo.controller;
 import com.omc.todo.entity.User;
 import com.omc.todo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("/api/v1/user")
+@RestController
+@RequestMapping("/api/v1/user")
 public class UserController {
 
     @Autowired
