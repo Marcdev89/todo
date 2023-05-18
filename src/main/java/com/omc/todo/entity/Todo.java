@@ -9,7 +9,8 @@ public class Todo {
     private long id;
     private String title;
     private boolean completed;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private User user;
 
     public Todo(String title, boolean completed, User user) {

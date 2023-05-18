@@ -2,6 +2,8 @@ package com.omc.todo.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "user")
 public class User {
@@ -13,6 +15,9 @@ public class User {
     private String password;
     @Embedded
     private Address address;
+
+  ///@OneToMany(mappedBy="user")
+   // private List<Todo> todoList;
 
     public User() {
     }

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sorted</title>
+
+  <style>
+
+.pagination {
+  display: inline-block;
+}
+
+.pagination div{
+display: inline-block;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
+</style>
+
+</head>
+<body>
+
+<table>
+  <thead>
+  <tr>
+    <th>
+      <a th:href="@{/todo/pages/{pageNumber}/{field}/{order}(pageNumber=${pageNumber},field='title',order=${order eq 'desc'}  ? 'asc' : 'desc')}">Title</a>
+    </th>
+    <th>
+      <a th:href="@{/todo/pages/{pageNumber}/{field}/{order}(pageNumber=${pageNumber},field='user.username',order=${order eq 'desc'}  ? 'asc' : 'desc')}">Username</a>
+    </th>
+    <th >
+      <a th:href="@{/todo/pages/{pageNumber}/{field}/{order}(pageNumber=${pageNumber},field='user.address.country',order=${order eq 'desc'}  ? 'asc' : 'desc')}">Country</a>
+    </th>
+    <th>
+      <a th:href="@{/todo/pages/{pageNumber}/{field}/{order}(pageNumber=${pageNumber},field='completed',order=${order eq 'desc'}  ? 'asc' : 'desc')}">Completed</a>
+    </th>
+
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="todo : ${todoList}">
+    <td th:text="${todo.title}"></td>
+    <td th:text="${todo.user.username}"></td>
+    <td th:text="${todo.user.address.country}"></td>
+    <td th:if="${todo.completed == false}" th:text="NO"></td>
+    <td th:if="${todo.completed == true}" th:text="SÍ"></td>
+  </tr>
+  </tbody>
+</table>
+<div class = "pagination"th:if="${totalPages > 1}">
+  <nav  th:if="${totalPages gt 0}">
+    <div>
+
+      <div th:if="${pageNumber > 1}">
+        <a th:href="@{/todo/pages/{pageNumber}/{field}/{order}(pageNumber=1,field=${field},order=${order eq 'desc'}  ? 'asc' : 'desc')}" title="First">First</a>
+      </div>
+
+      <div  th:if="${pageNumber > 1}" th:classappend="${ pageNumber > totalPages} ? 'disabled' ">
+        <a th:href="@{/todo/pages/{pageNumber}/{field}/{field}(pageNumber=${pageNumber-1},field=${field},order=${order eq 'desc'}  ? 'asc' : 'desc')}" aria-label="Anterior" title="Anterior">&laquo;</a>
+      </div>
+
+      <div   th:each="i : ${#numbers.sequence( pageNumber >2 ? pageNumber -2 : 1, totalPages > 10 + pageNumber ? pageNumber + 10 : totalPages, 1)}">
+        <a  th:classappend="${i eq pageNumber} ? 'active'" th:href="@{/todo/pages/{pageNum}/{field}/{order}(pageNum=${i},field=${field},order=${order eq 'desc'}  ? 'asc' : 'desc')}" th:text="${i}" th:title="${'Page '+ i}" rel="tooltip"></a>
+
+      </div>
+
+      <div  th:if="${pageNumber + 10 < totalPages}">
+        <a  href="#">
+          <span data-feather="more-horizontal" width="20" height="20">...</span>
+        </a>
+      </div>
+
+      <div th:if="${pageNumber < totalPages}" th:classappend="${pageNumber eq totalPages} ? 'disabled'">
+        <a th:href="@{/todo/pages/{pageNumber}/{field}/{order}(pageNumber=${pageNumber+1},field=${field},order=${order eq 'desc'}  ? 'asc' : 'desc')}" aria-label="Next" title="Next" rel="tooltip">
+          <span aria-hidden="true" data-feather="chevrons-right" width="20" height="20" title="next">&raquo;</span>
+        </a>
+      </div>
+
+      <div th:if="${pageNumber < totalPages}" th:classappend="${pageNumber eq totalPages} ? 'disabled'" th:disabled="${pageNumber eq totalPages}">
+        <a  th:href="@{/todo/pages/{pageNumber}/{field}/{order}(pageNumber=${totalPages},field=${field},order=${order eq 'desc'}  ? 'asc' : 'desc')}" aria-label="Last" title="Last">Last</a>
+      </div>
+
+    </div>
+  </nav>
+</div>
+
+<!--<div class="pagination">
+  <a href="#">&laquo;</a>
+  <a href="#">1</a>
+  <a class="active" href="#">2</a>
+  <a href="#">3</a>
+  <a href="#">4</a>
+  <a href="#">5</a>
+  <a href="#">6</a>
+  <a href="#">&raquo;</a>
+</div> -->
+
+</div>
+</div>
+
+</body>
+</html>
