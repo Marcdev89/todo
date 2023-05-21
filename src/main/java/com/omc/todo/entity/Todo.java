@@ -1,4 +1,5 @@
 package com.omc.todo.entity;
+import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 
 @Entity
@@ -7,19 +8,19 @@ public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Nonnull
     private String title;
     private boolean completed;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne (cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id")
     private User user;
 
+    public Todo() {
+    }
     public Todo(String title, boolean completed, User user) {
         this.title = title;
         this.completed = completed;
         this.user = user;
-    }
-
-    public Todo() {
     }
 
     public long getId() {
