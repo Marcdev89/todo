@@ -22,10 +22,6 @@ public class TodoService {
     public List<Todo> getTodoList() {
         return todoRepository.findAll();
     }
-/*
-    public List<Todo> findByTitle(String title) {
-        return todoRepository.findAllByTitle(title);
-    } */
 
     public Todo getTodoById(Long id) {
         return todoRepository.findById(id).orElse(null);
