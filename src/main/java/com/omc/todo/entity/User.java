@@ -2,7 +2,6 @@ package com.omc.todo.entity;
 
 import jakarta.persistence.*;
 
-import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -15,9 +14,6 @@ public class User {
     private String password;
     @Embedded
     private Address address;
-
-  ///@OneToMany(mappedBy="user")
-   // private List<Todo> todoList;
 
     public User() {
     }
@@ -67,5 +63,16 @@ public class User {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", address=" + address +
+                '}';
     }
 }
