@@ -30,7 +30,7 @@ public class TodoThymeleafController {
         model.addAttribute("users", userService.getUsers());
         Todo todoPost = new Todo();
         model.addAttribute("todoPost", todoPost);
-        return "newtodo";
+        return "create";
     }
 
     @PostMapping("/save")
@@ -49,7 +49,7 @@ public class TodoThymeleafController {
         model.addAttribute("completed","Form edit");
         model.addAttribute("modified", modified);
         model.addAttribute("todoList", todoList);
-        return "edit";
+        return "create";
     }
 
     @PostMapping("/edited")
