@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>To-Do App</title>
+
+    <!-- All CSS code have to be in external file -->
+    <style>
+
+    .pagination {
+      display: inline-block;
+    }
+
+    .pagination div {
+    display: inline-block;
+    }
+
+    .pagination a {
+      color: black;
+      float: left;
+      padding: 8px 16px;
+      text-decoration: none;
+    }
+
+    button>a {
+    text-decoration:none;
+    color:white;
+    padding: 8px 8px;
+    }
+
+    .pagination a.active, button {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .pagination a:hover:not(.active) {
+    background-color: #ddd;
+    }
+
+    </style>
+
+</head>
+    <body>
+        <form th:action="@{/page/1}">
+
+          <input type="hidden" name="sortField" th:value="${sortField}"/>
+          <input type="hidden" name="order" th:value="${order}"/>
+
+          <label> Filter: </label>
+            <input type="text" name="keywordTitle" id="keywordTitle" th:value="${keywordTitle}" placeholder="title...">
+            <input type="text" name="keywordUsername" id="keywordUsername" th:value="${keywordUsername}" placeholder="username...">
+            <input type="submit" value="Search">
+        </form>
+
+        <table>
+            <thead>
+            <tr>
+                <th>
+                    <a th:href="@{'/page/' + ${currentPage} + '?sortField=title&order=' + ${reverseOrder} + '&keywordTitle=' + ${keywordTitle} + '&keywordUsername=' + ${keywordUsername}}">Title</a>
+                </th>
+                <th>
+                    <a th:href="@{'/page/' + ${currentPage} + '?sortField=user.username&order=' + ${reverseOrder} + '&keywordTitle=' + ${keywordTitle} + '&keywordUsername=' + ${keywordUsername}}">Username</a>
+                </th>
+                <th>
+                    <a th:href="@{'/page/' + ${currentPage} + '?sortField=user.address.country&order=' + ${reverseOrder} + '&keywordTitle=' + ${keywordTitle} + '&keywordUsername=' + ${keywordUsername}}">Country</a>
+                </th>
+                <th>
+                    <a th:href="@{'/page/' + ${currentPage} + '?sortField=completed&order=' + ${reverseOrder} + '&keywordTitle=' + ${keywordTitle} + '&keywordUsername=' + ${keywordUsername}}">Completed</a>
+                </th>
+
+            </tr>
+            </thead>
+            <tbody>
+                <tr th:each="todo : ${todoList}">
+                    <td th:text="${todo.title}"></td>
+                    <td th:text="${todo.user.username}"></td>
+                    <td th:text="${todo.user.address.country}"></td>
+                    <td th:if="${todo.completed == false}" th:text="NO"></td>
+                    <td th:if="${todo.completed == true}" th:text="SÍ"></td>
+                    <td><button> <a th:href="@{/edit/{id}(id=${todo.id})}" th:text="Edit"></a> </button></td>
+            </tbody>
+        </table>
+            <br>
+        <div>
+        <span th:text="'To-Do found:  ' + ${totalItems} + '.'"> </span>
+        </div>
+            <br>
+        <div class = "pagination" th:if="${totalPages > 1}" th:with="pageUrlPostfix = '?sortField=' + ${sortField} + '&order=' + ${order} + '&keywordTitle=' + ${keywordTitle} + '&keywordUsername=' + ${keywordUsername}">
+            <nav th:if="${totalPages gt 0}">
+                <div>
+                    <div th:if="${currentPage > 1}">
+                        <a th:href="@{'/page/1'+ ${pageUrlPostfix}}" title="First">First</a>
+                    </div>
+                    <div th:if="${currentPage > 1}" th:classappend="${ currentPage > totalPages} ? 'disabled' ">
+                        <a th:href="@{'/page/'+ ${currentPage-1} + ${pageUrlPostfix}}" aria-label="Anterior" title="Anterior">&laquo;</a>
+                    </div>
+                    <div th:each="i : ${#numbers.sequence( currentPage >2 ? currentPage -2 : 1, totalPages > 10 + currentPage ? currentPage + 10 : totalPages, 1)}">
+                        <a  th:classappend="${i eq currentPage} ? 'active'" th:href="@{'/page/' + ${i} + ${pageUrlPostfix}}" th:text="${i}" th:title="${'Page '+ i}" rel="tooltip"></a>
+                    </div>
+                    <div th:if="${currentPage + 10 < totalPages}">
+                        <a href="#">
+                            <span data-feather="more-horizontal" width="20" height="20">...</span>
+                        </a>
+                    </div>
+                    <div th:if="${currentPage < totalPages}" th:classappend="${currentPage eq totalPages} ? 'disabled'">
+                        <a th:href="@{'/page/'+ ${currentPage+1} + ${pageUrlPostfix}}" aria-label="Next" title="Next" rel="tooltip">
+                            <span aria-hidden="true" data-feather="chevrons-right" width="20" height="20" title="next">&raquo;</span>
+                        </a>
+                    </div>
+                    <div th:if="${currentPage < totalPages}" th:classappend="${currentPage eq totalPages} ? 'disabled'" th:disabled="${currentPage eq totalPages}">
+                        <a th:href="@{'/page/'+ ${totalPages} + ${pageUrlPostfix}}" aria-label="Last" title="Last">Last</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        </div>
+            <br><br>
+            <label>Create a new To-do</label>
+            <br><br>
+            <button><a th:href="@{/todo/new}">NEW</a></button>
+        </div>
+
+    </body>
+</html>
