@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Create a new To-Do</title>
+</head>
+<body>
+
+    <h1>Create a new To-Do</h1>
+
+    <form th:action="@{/save}" th:object="${todoPost}" method="post">
+
+      <label>User: </label>
+
+      <select th:field="${todoPost.user.id}">
+         <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.username}" ></option>
+      </select>
+
+      <label> Title: </label>
+          <input type="text" name="title" th:field="${todoPost.title}" placeholder="Do something to do..." maxlength="199" required>
+
+      <label> Status: </label>
+          <select th:field="${todoPost.completed}">
+            <option th:value="false"  th:text="'Not Completed'" selected></option>
+            <option th:value="true" th:text="Completed" ></option>
+          </select>
+
+      <button>Save</button>
+
+    </form>
+
+</body>
+</html>
