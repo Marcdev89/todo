@@ -20,8 +20,12 @@ display: inline-block;
   padding: 8px 16px;
   text-decoration: none;
 }
+button>a{text-decoration:none;
+color:white;
+padding: 8px 8px;
+}
 
-.pagination a.active {
+.pagination a.active, button {
   background-color: #4CAF50;
   color: white;
 }
@@ -31,6 +35,12 @@ display: inline-block;
 
 </head>
 <body>
+<form th:action="@{/todo/pages/{pageNumber}/{field}/{order}(pageNumber=1,field=${field},order=${order})}">
+  <label> Filter: </label>
+  <input type="text" name="keyWordTitle" id="keyWordTitle" th:value="${keyWordTitle}" placeholder="title...">
+  <input type="text" name="keyWordUsername" id="keyWordUsername" th:value="${keyWordUsername}" placeholder="username...">
+  <input type="submit" value="Search">
+</form>
 
 <table>
   <thead>
@@ -51,12 +61,15 @@ display: inline-block;
   </tr>
   </thead>
   <tbody>
+
+
   <tr th:each="todo : ${todoList}">
     <td th:text="${todo.title}"></td>
     <td th:text="${todo.user.username}"></td>
     <td th:text="${todo.user.address.country}"></td>
     <td th:if="${todo.completed == false}" th:text="NO"></td>
     <td th:if="${todo.completed == true}" th:text="SÍ"></td>
+    <td><button> <a th:href="@{/edit/{id}(id=${todo.id})}" th:text="Edit"></a> </button></td>
   </tr>
   </tbody>
 </table>
@@ -65,15 +78,15 @@ display: inline-block;
     <div>
 
       <div th:if="${pageNumber > 1}">
-        <a th:href="@{/todo/pages/{pageNumber}/{field}/{order}(pageNumber=1,field=${field},order=${order eq 'desc'}  ? 'asc' : 'desc')}" title="First">First</a>
+        <a th:href="@{/todo/pages/{pageNumber}/{field}/{order}(pageNumber=1,field=${field},order=${order})}" title="First">First</a>
       </div>
 
       <div  th:if="${pageNumber > 1}" th:classappend="${ pageNumber > totalPages} ? 'disabled' ">
-        <a th:href="@{/todo/pages/{pageNumber}/{field}/{field}(pageNumber=${pageNumber-1},field=${field},order=${order eq 'desc'}  ? 'asc' : 'desc')}" aria-label="Anterior" title="Anterior">&laquo;</a>
+        <a th:href="@{/todo/pages/{pageNumber}/{field}/{order}(pageNumber=${pageNumber-1},field=${field},order=${order})}" aria-label="Anterior" title="Anterior">&laquo;</a>
       </div>
 
       <div   th:each="i : ${#numbers.sequence( pageNumber >2 ? pageNumber -2 : 1, totalPages > 10 + pageNumber ? pageNumber + 10 : totalPages, 1)}">
-        <a  th:classappend="${i eq pageNumber} ? 'active'" th:href="@{/todo/pages/{pageNum}/{field}/{order}(pageNum=${i},field=${field},order=${order eq 'desc'}  ? 'asc' : 'desc')}" th:text="${i}" th:title="${'Page '+ i}" rel="tooltip"></a>
+        <a  th:classappend="${i eq pageNumber} ? 'active'" th:href="@{/todo/pages/{pageNum}/{field}/{order}(pageNum=${i},field=${field},order=${order})}" th:text="${i}" th:title="${'Page '+ i}" rel="tooltip"></a>
 
       </div>
 
@@ -84,31 +97,22 @@ display: inline-block;
       </div>
 
       <div th:if="${pageNumber < totalPages}" th:classappend="${pageNumber eq totalPages} ? 'disabled'">
-        <a th:href="@{/todo/pages/{pageNumber}/{field}/{order}(pageNumber=${pageNumber+1},field=${field},order=${order eq 'desc'}  ? 'asc' : 'desc')}" aria-label="Next" title="Next" rel="tooltip">
+        <a th:href="@{/todo/pages/{pageNumber}/{field}/{order}(pageNumber=${pageNumber+1},field=${field},order=${order})}" aria-label="Next" title="Next" rel="tooltip">
           <span aria-hidden="true" data-feather="chevrons-right" width="20" height="20" title="next">&raquo;</span>
         </a>
       </div>
 
       <div th:if="${pageNumber < totalPages}" th:classappend="${pageNumber eq totalPages} ? 'disabled'" th:disabled="${pageNumber eq totalPages}">
-        <a  th:href="@{/todo/pages/{pageNumber}/{field}/{order}(pageNumber=${totalPages},field=${field},order=${order eq 'desc'}  ? 'asc' : 'desc')}" aria-label="Last" title="Last">Last</a>
+        <a  th:href="@{/todo/pages/{pageNumber}/{field}/{order}(pageNumber=${totalPages},field=${field},order=${order})}" aria-label="Last" title="Last">Last</a>
       </div>
 
     </div>
   </nav>
 </div>
-
-<!--<div class="pagination">
-  <a href="#">&laquo;</a>
-  <a href="#">1</a>
-  <a class="active" href="#">2</a>
-  <a href="#">3</a>
-  <a href="#">4</a>
-  <a href="#">5</a>
-  <a href="#">6</a>
-  <a href="#">&raquo;</a>
-</div> -->
-
-</div>
+<br><br>
+<label>Create a new To-do</label>
+<br><br>
+<button><a th:href="@{/todo/new}">NEW</a></button>
 </div>
 
 </body>
