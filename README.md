@@ -12,6 +12,8 @@ To-Do application is an app where users can create, edit and search tasks.
   - Spring Data JPA
   - MySQL Database
   - Thymeleaf. 
+  - JUnit (v4.13.2)
+  - Mockito (v5.3.1)
 
 ## Installation/Config
 
