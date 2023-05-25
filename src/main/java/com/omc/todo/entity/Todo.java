@@ -1,67 +1,30 @@
 package com.omc.todo.entity;
-import jakarta.annotation.Nonnull;
-import jakarta.persistence.*;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 @Entity
 @Table(name = "todo")
 public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Nonnull
+    @Size(min = 1,max = 199,message = "Title can not be longer than 199 characters")
+    @NotNull
     private String title;
     private boolean completed;
     @ManyToOne (cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Todo() {
-    }
     public Todo(String title, boolean completed, User user) {
         this.title = title;
         this.completed = completed;
         this.user = user;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public boolean isCompleted() {
-        return completed;
-    }
-
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    @Override
-    public String toString() {
-        return "Todo{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", completed=" + completed +
-                ", user=" + user +
-                '}';
-    }
 }
