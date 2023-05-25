@@ -10,6 +10,8 @@ To-Do application is an app where users can create, edit and search tasks.
 - Dependencies:
   - Spring Web
   - Spring Data JPA
+  - Spring Validation
+  - Lombok (v1.18.28)
   - MySQL Database
   - Thymeleaf. 
   - JUnit (v4.13.2)
