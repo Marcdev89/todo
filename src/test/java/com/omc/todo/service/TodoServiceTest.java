@@ -16,6 +16,8 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +25,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-@RunWith(MockitoJUnitRunner.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@SpringBootTest
 class TodoServiceTest {
 
-    @Mock
+    @Autowired
     TodoService todoService;
     @Mock
     TodoRepository todoRepository;
@@ -82,9 +82,9 @@ class TodoServiceTest {
         IllegalArgumentException notNull = new IllegalArgumentException("not null");
 
         // Behaviour
-        doThrow(longer).when(todoService).validateData(longerTitle);
+      /*  doThrow(longer).when(todoService).validateData(longerTitle);
         doThrow(notNull).when(todoService).validateData(null);
-        doNothing().when(todoService).validateData(correctTitle);
+        doNothing().when(todoService).validateData(correctTitle); */
 
         //When - method is called 3 different ways:
 
